@@ -1,0 +1,404 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Calls testing API",
+    "version" : "1.2.0",
+    "title" : "Calls testing API",
+    "contact" : {
+      "name" : "Jindřich Hrabal",
+      "email" : "jindrich.hrabal@zoomint.com"
+    },
+    "license" : {
+      "name" : "ZOOM International",
+      "url" : "http://www.zoomint.com"
+    }
+  },
+  "basePath" : "/call-test-api",
+  "tags" : [ {
+    "name" : "devices"
+  }, {
+    "name" : "calls"
+  } ],
+  "schemes" : [ "http" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/deviceControl/registerDevice" : {
+      "post" : {
+        "tags" : [ "devices" ],
+        "summary" : "Register device",
+        "description" : "Register device to platform to be controllable",
+        "operationId" : "registerDevice",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "device",
+          "description" : "Definition of device to register",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/deviceType"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "device registered",
+            "schema" : {
+              "$ref" : "#/definitions/deviceResponse"
+            }
+          },
+          "202" : {
+            "description" : "platform related error",
+            "schema" : {
+              "$ref" : "#/definitions/deviceResponse"
+            }
+          },
+          "400" : {
+            "description" : "general error",
+            "schema" : {
+              "$ref" : "#/definitions/deviceResponse"
+            }
+          }
+        }
+      }
+    },
+    "/deviceControl/deviceState" : {
+      "post" : {
+        "tags" : [ "devices" ],
+        "summary" : "Get device state",
+        "description" : "Get state of registered plaform device",
+        "operationId" : "deviceState",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "device",
+          "description" : "Definition of device to get its state",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/deviceType"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "device state returned",
+            "schema" : {
+              "$ref" : "#/definitions/callsAndStatesResponse"
+            }
+          },
+          "202" : {
+            "description" : "platform related error",
+            "schema" : {
+              "$ref" : "#/definitions/callsAndStatesResponse"
+            }
+          },
+          "400" : {
+            "description" : "general error",
+            "schema" : {
+              "$ref" : "#/definitions/callsAndStatesResponse"
+            }
+          }
+        }
+      }
+    },
+    "/callControl/makeCall" : {
+      "post" : {
+        "tags" : [ "calls" ],
+        "summary" : "Make new call",
+        "description" : "Make call from the provided device to the provided destination",
+        "operationId" : "makeCall",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "deviceAndDestination",
+          "description" : "Definition of call to make",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/deviceAndDestinationType"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "call made",
+            "schema" : {
+              "$ref" : "#/definitions/callResponse"
+            }
+          },
+          "202" : {
+            "description" : "platform related error",
+            "schema" : {
+              "$ref" : "#/definitions/callResponse"
+            }
+          },
+          "400" : {
+            "description" : "general error",
+            "schema" : {
+              "$ref" : "#/definitions/callResponse"
+            }
+          }
+        }
+      }
+    },
+    "/callControl/answerCall" : {
+      "put" : {
+        "tags" : [ "calls" ],
+        "summary" : "Answer call",
+        "description" : "Answer provided call with provided device",
+        "operationId" : "answerCall",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "deviceAndCall",
+          "description" : "Definition of device and call to answer",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/deviceAndCallType"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "call answered",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          },
+          "202" : {
+            "description" : "platform related error",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          },
+          "400" : {
+            "description" : "general error",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          }
+        }
+      }
+    },
+    "/callControl/releaseCall" : {
+      "put" : {
+        "tags" : [ "calls" ],
+        "summary" : "Release call",
+        "description" : "Release provided call with provided device",
+        "operationId" : "releaseCall",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "deviceAndCall",
+          "description" : "Definition of device and call to release",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/deviceAndCallType"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "call released",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          },
+          "202" : {
+            "description" : "platform related error",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          },
+          "400" : {
+            "description" : "general error",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          }
+        }
+      }
+    },
+    "/callControl/holdCall" : {
+      "put" : {
+        "tags" : [ "calls" ],
+        "summary" : "Hold call",
+        "description" : "Hold provided call on provided device",
+        "operationId" : "holdCall",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "deviceAndCall",
+          "description" : "Definition of device and call to hold",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/deviceAndCallType"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "call held",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          },
+          "202" : {
+            "description" : "platform related error",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          },
+          "400" : {
+            "description" : "general error",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          }
+        }
+      }
+    },
+    "/callControl/resumeCall" : {
+      "put" : {
+        "tags" : [ "calls" ],
+        "summary" : "Resume call",
+        "description" : "Resume provided call on provided device",
+        "operationId" : "resumeCall",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "deviceAndCall",
+          "description" : "Definition of device and call to resume",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/deviceAndCallType"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "call resumed",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          },
+          "202" : {
+            "description" : "platform related error",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          },
+          "400" : {
+            "description" : "general error",
+            "schema" : {
+              "$ref" : "#/definitions/generalResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "deviceType" : {
+      "type" : "object",
+      "properties" : {
+        "terminal" : {
+          "type" : "string"
+        },
+        "address" : {
+          "type" : "string"
+        }
+      }
+    },
+    "callType" : {
+      "type" : "object",
+      "properties" : {
+        "callId" : {
+          "type" : "string"
+        }
+      }
+    },
+    "callStateType" : {
+      "type" : "string",
+      "enum" : [ "talking", "ringing", "dialing", "held" ]
+    },
+    "callAndStateType" : {
+      "allOf" : [ {
+        "properties" : {
+          "call" : {
+            "$ref" : "#/definitions/callType"
+          },
+          "state" : {
+            "$ref" : "#/definitions/callStateType"
+          }
+        }
+      }, { } ]
+    },
+    "deviceAndDestinationType" : {
+      "type" : "object",
+      "properties" : {
+        "device" : {
+          "$ref" : "#/definitions/deviceType"
+        },
+        "destination" : {
+          "type" : "string"
+        }
+      }
+    },
+    "deviceAndCallType" : {
+      "type" : "object",
+      "properties" : {
+        "device" : {
+          "$ref" : "#/definitions/deviceType"
+        },
+        "call" : {
+          "$ref" : "#/definitions/callType"
+        }
+      }
+    },
+    "generalResponse" : {
+      "type" : "object",
+      "discriminator" : "responseType",
+      "properties" : {
+        "responseType" : {
+          "type" : "string",
+          "enum" : [ "success", "error" ]
+        },
+        "error" : {
+          "$ref" : "#/definitions/generalResponse_error"
+        }
+      }
+    },
+    "deviceResponse" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/generalResponse"
+      }, {
+        "properties" : {
+          "device" : {
+            "$ref" : "#/definitions/deviceType"
+          }
+        }
+      } ]
+    },
+    "callResponse" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/generalResponse"
+      }, {
+        "properties" : {
+          "call" : {
+            "$ref" : "#/definitions/callType"
+          }
+        }
+      } ]
+    },
+    "callsAndStatesResponse" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/generalResponse"
+      }, {
+        "properties" : {
+          "calls" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/callAndStateType"
+            }
+          }
+        }
+      } ]
+    },
+    "generalResponse_error" : {
+      "properties" : {
+        "errorCode" : {
+          "type" : "integer"
+        },
+        "errorMessage" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}
